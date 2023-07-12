@@ -1,89 +1,67 @@
 import React from "react";
-import { Space, Table, Tag } from "antd";
-const columns = [
-    {
-        title: "ID",
-        dataIndex: "id",
-        key: "id",
-        render: (text) => <a>{text}</a>,
-    },
-    {
-        title: "Tên",
-        dataIndex: "name",
-        key: "name",
-        render: (text) => <a>{text}</a>,
-    },
-    {
-        title: "Thời gian bắt đầu",
-        dataIndex: "age",
-        key: "age",
-    },
-    {
-        title: "Thời gian kết thúc",
-        dataIndex: "address",
-        key: "address",
-    },
-    {
-        title: "Trạng thái",
-        key: "tags",
-        dataIndex: "tags",
-        render: (_, { tags }) => (
-            <>
-                {tags.map((tag) => {
-                    let color = tag.length > 5 ? "geekblue" : "green";
-                    if (tag === "loser") {
-                        color = "volcano";
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </>
-        ),
-    },
-    {
-        title: "Chức năng",
-        key: "action",
-        render: (_, record) => (
-            <Space size="middle">
-                <a>Update</a>
-                <a>Delete</a>
-            </Space>
-        ),
-    },
-];
+import icons from "../utils/icons";
 
-const data = [
-    {
-        key: "1",
-        id: "1",
-        name: "John Brown",
-        age: 32,
-        address: "New York No. 1 Lake Park",
-        tags: ["nice", "developer"],
-    },
-    {
-        key: "2",
-        id: "2",
-        name: "Jim Green",
-        age: 42,
-        address: "London No. 1 Lake Park",
-        tags: ["loser"],
-    },
-    {
-        key: "3",
-        id: "3",
-        name: "Joe Black",
-        age: 32,
-        address: "Sydney No. 1 Lake Park",
-        tags: ["cool", "teacher"],
-    },
-];
-
-const MyTable = () => {
-    return <Table columns={columns} dataSource={data} />;
+const MyTable = ({ campaigns }) => {
+    return (
+        <div className="">
+            <h3 className="text-[16px] font-semibold text-[#000] my-[15px]">
+                Tổng số kết quả: 3
+            </h3>
+            <table className="rounded-[3px] w-full">
+                <thead>
+                    <tr className="border-b-[1px] border-[#ccc]">
+                        <th className="text-[16px] font-bold text-[#000]">
+                            ID
+                        </th>
+                        <th className="text-[16px] font-bold text-[#000]">
+                            Tên
+                        </th>
+                        <th className="text-[16px] font-bold text-[#000]">
+                            Thời gian bắt đầu
+                        </th>
+                        <th className="text-[16px] font-bold text-[#000]">
+                            Thời gian kết thúc
+                        </th>
+                        <th className="text-[16px] font-bold text-[#000]">
+                            Trạng thái
+                        </th>
+                        <th className="text-[16px] font-bold text-[#000]">
+                            Chức năng
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {campaigns.map((item) => (
+                        <tr
+                            className="border-b-[1px] border-[#ccc]"
+                            key={item?.campaign_id}
+                        >
+                            <td className="text-[16px]">{item?.campaign_id}</td>
+                            <td className="text-[16px]">{item?.name}</td>
+                            <td className="text-[16px]">{item?.start_date}</td>
+                            <td className="text-[16px]">{item?.end_date}</td>
+                            <td className="text-[16px]">
+                                {item?.status?.name}
+                            </td>
+                            <td className="text-[16px]">
+                                <div className="flex items-center gap-[15px]">
+                                    <div className="">
+                                        <icons.AiFillEye className="text-main text-[21px] font-bold cursor-pointer" />
+                                    </div>
+                                    <div className="">
+                                        <icons.FaPencilAlt className="text-[#757575] text-[14px] font-bold cursor-pointer" />
+                                    </div>
+                                    <div className="">
+                                        <icons.RiDeleteBin6Line className="text-[#fb92b8] text-[18px] font-bold cursor-pointer" />
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
 };
 
 export default MyTable;

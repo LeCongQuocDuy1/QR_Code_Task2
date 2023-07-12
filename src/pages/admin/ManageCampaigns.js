@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import icons from "../../utils/icons";
 import { DatePicker } from "antd";
 import MyTable from "../../components/MyTable";
+import { apiGetCampaigns } from "../../apis/campaign";
+import { Spin } from "antd";
 
 const ManageCampaigns = () => {
+    const [campaigns, setCampaigns] = useState([]);
+
+    const fetchCampaigns = async () => {
+        const response = await apiGetCampaigns();
+        if (response.status) {
+            setCampaigns(response.data);
+        }
+    };
+
+    console.log(campaigns);
+
+    useEffect(() => {
+        fetchCampaigns();
+    }, []);
+
     return (
         <div className="">
             <div className="p-[15px] bg-main rounded-sm w-full flex items-center justify-between">
@@ -28,13 +45,15 @@ const ManageCampaigns = () => {
                         />
                     </div>
                     <DatePicker
+                        inputReadOnly={true}
                         placeholder="Từ ngày"
-                        className="py-[8px] text-[15px] font-semibold"
+                        className="py-[8px] text-[15px] font-semibold cursor-pointer placeholder:text-[#000]"
                         onChange={(date) => console.log(date?.$d)}
                     />
                     <DatePicker
+                        inputReadOnly={true}
                         placeholder="Đến ngày"
-                        className="py-[8px] text-[15px] font-semibold"
+                        className="py-[8px] text-[15px] font-semibold cursor-pointer placeholder:text-[#000]"
                         onChange={(date) => console.log(date?.$d)}
                     />
                     <button className="px-[10px] py-[8px] bg-[#fff] border-[1px] border-main rounded-[4px] flex items-center gap-[5px]">
@@ -45,7 +64,15 @@ const ManageCampaigns = () => {
                     </button>
                 </div>
                 <div className="">
-                    <MyTable />
+                    {campaigns.length === 0 ? (
+                        <div className="flex justify-center m-auto mt-[100px]">
+                            <Spin tip="Loading data..." size="large">
+                                <div className="content" />
+                            </Spin>
+                        </div>
+                    ) : (
+                        <MyTable campaigns={campaigns} />
+                    )}
                 </div>
             </div>
         </div>

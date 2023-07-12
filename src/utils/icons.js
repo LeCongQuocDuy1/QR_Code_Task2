@@ -3,14 +3,23 @@ import {
     BiSolidMessageAltError,
     BiSolidBank,
 } from "react-icons/bi";
-import { FaUserFriends, FaMapMarkerAlt, FaUsers } from "react-icons/fa";
+import {
+    FaUserFriends,
+    FaMapMarkerAlt,
+    FaUsers,
+    FaPencilAlt,
+} from "react-icons/fa";
 import { FiGift } from "react-icons/fi";
-import { TbReportAnalytics } from "react-icons/tb";
-import { RiFileUserFill, RiSettings3Fill } from "react-icons/ri";
+import { TbReportAnalytics, TbZoomReset } from "react-icons/tb";
+import {
+    RiFileUserFill,
+    RiSettings3Fill,
+    RiDeleteBin6Line,
+} from "react-icons/ri";
 import { HiMiniFire } from "react-icons/hi2";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { HiOutlineSearch } from "react-icons/hi";
-import { TbZoomReset } from "react-icons/tb";
+import { AiFillEye } from "react-icons/ai";
 
 const icons = {
     BiSolidDashboard,
@@ -20,13 +29,16 @@ const icons = {
     HiMiniFire,
     FiGift,
     TbReportAnalytics,
+    TbZoomReset,
     RiFileUserFill,
     FaMapMarkerAlt,
     FaUsers,
     RiSettings3Fill,
     BsPlusCircleFill,
     HiOutlineSearch,
-    TbZoomReset,
+    FaPencilAlt,
+    RiDeleteBin6Line,
+    AiFillEye,
 };
 
 export default icons;
