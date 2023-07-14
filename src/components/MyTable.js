@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import icons from "../utils/icons";
 
-const MyTable = ({ campaigns }) => {
+const MyTable = ({
+    campaigns,
+    // handleClickDetail
+}) => {
     return (
         <div className="">
             <h3 className="text-[16px] font-semibold text-[#000] my-[15px]">
-                Tổng số kết quả: 3
+                Tổng số kết quả: {campaigns?.length}
             </h3>
             <table className="rounded-[3px] w-full">
                 <thead>
@@ -31,7 +34,7 @@ const MyTable = ({ campaigns }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {campaigns.map((item) => (
+                    {campaigns?.map((item) => (
                         <tr
                             className="border-b-[1px] border-[#ccc]"
                             key={item?.campaign_id}
@@ -45,7 +48,14 @@ const MyTable = ({ campaigns }) => {
                             </td>
                             <td className="text-[16px]">
                                 <div className="flex items-center gap-[15px]">
-                                    <div className="">
+                                    <div
+                                        // onClick={() => {
+                                        //     handleClickDetail(
+                                        //         item?.campaign_id
+                                        //     );
+                                        // }}
+                                        className=""
+                                    >
                                         <icons.AiFillEye className="text-main text-[21px] font-bold cursor-pointer" />
                                     </div>
                                     <div className="">
