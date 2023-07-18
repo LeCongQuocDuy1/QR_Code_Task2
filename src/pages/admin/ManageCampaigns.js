@@ -7,55 +7,116 @@ import {
     apiGetCampaigns,
     apiSearchCampaign,
     apiCreateCampaign,
+    apiDeleteCampaign,
     apiShowCampaign,
+    apiUpdateCampaign,
 } from "../../apis/campaign";
 import MyModal from "../../components/MyModal";
+import MyModal2 from "../../components/MyModal2";
 
 const ManageCampaigns = () => {
     const [campaigns, setCampaigns] = useState([]);
     const [campaign, setCampaign] = useState(null);
     const [toggleModal, setToggleModal] = useState(false);
+    const [toggleModal2, setToggleModal2] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
     const [searchValue, setSearchValue] = useState("");
-    const [payload, setPayload] = useState(() => {
-        const initData = {
-            name: "",
-            start_date: "",
-            end_date: "",
-            status: 0,
-            reward_url: "",
-        };
-        return initData;
-    });
 
     const onSubmit = async (data) => {
-        const response = await apiCreateCampaign(data);
-        console.log(response);
-        if (response.status === "OK") {
-            Swal.fire(
-                "Congratulations!",
-                "Thêm mới chiến dịch thành công!",
-                "success"
-            ).then(async () => {
-                setPayload({
-                    name: "",
-                    start_date: "",
-                    end_date: "",
-                    status: 0,
-                    reward_url: "",
+        if (isEdit) {
+            const id = data?.campaign_id;
+            const response = await apiUpdateCampaign(id, data);
+            if (response.status === "OK") {
+                Swal.fire(
+                    "Congratulations!",
+                    "Thêm mới chiến dịch thành công!",
+                    "success"
+                ).then(async () => {
+                    setCampaign(null);
+                    setToggleModal(!toggleModal);
+                    await fetchCampaigns();
                 });
-                setToggleModal(!toggleModal);
-                await fetchCampaigns();
-            });
+            } else {
+                Swal.fire("Oops!", `${response?.message}`, "error");
+            }
         } else {
-            Swal.fire("Oops!", `${response?.message}`, "error");
+            const response = await apiCreateCampaign(data);
+            if (response.status === "OK") {
+                Swal.fire(
+                    "Congratulations!",
+                    "Thêm mới chiến dịch thành công!",
+                    "success"
+                ).then(async () => {
+                    setCampaign(null);
+                    setToggleModal(!toggleModal);
+                    await fetchCampaigns();
+                });
+            } else {
+                Swal.fire("Oops!", `${response?.message}`, "error");
+            }
         }
     };
 
-    // const handleClickDetail = async (id) => {
-    //     setToggleModal(!toggleModal);
-    //     const response = await apiShowCampaign(id);
-    //     setCampaign(response.data);
-    // };
+    const handleDelete = async (id) => {
+        if (id) {
+            Swal.fire({
+                title: "Bạn có chắc muốn xóa chiến dịch này không?",
+                text: "Bạn sẽ không thể lấy lại được thông tin!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Có, chắc chắn rồi!",
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const response = await apiDeleteCampaign({ "ids[]": id });
+                    if (response.status === "OK") {
+                        Swal.fire(
+                            "Đã xóa chiến dịch!",
+                            "Xóa chiến dịch thành công.",
+                            "success"
+                        ).then(async () => {
+                            await fetchCampaigns();
+                        });
+                    } else {
+                        Swal.fire("Oops!", `${response?.message}`, "error");
+                    }
+                }
+            });
+        }
+    };
+
+    const handleDetail = async (id) => {
+        // if (id) {
+        //     const response = await apiShowCampaign(id);
+        //     if (response.status === "OK") {
+        //         setCampaign(response.data);
+        //         setToggleModal(!toggleModal);
+        //     } else {
+        //         Swal.fire("Oops!", `${response?.message}`, "error");
+        //     }
+        // }
+        console.log(id);
+        setToggleModal2(!toggleModal2);
+    };
+
+    const handleUpdate = async (id) => {
+        if (id) {
+            const response = await apiShowCampaign(id);
+            if (response.status === "OK") {
+                setCampaign(response.data);
+                setToggleModal(!toggleModal);
+                setIsEdit(true);
+            } else {
+                Swal.fire("Oops!", `${response?.message}`, "error");
+            }
+        }
+    };
+
+    const handleAdd = async () => {
+        setToggleModal(!toggleModal);
+        setIsEdit(false);
+    };
 
     const handleQueryChange = (e) => {
         setSearchValue(e.target.value);
@@ -73,6 +134,7 @@ const ManageCampaigns = () => {
             setCampaigns(response.data);
         }
     };
+
     useEffect(() => {
         fetchCampaigns();
     }, []);
@@ -86,7 +148,7 @@ const ManageCampaigns = () => {
                 <button
                     className="px-[10px] py-[6px] bg-[#fff] rounded-[4px] flex items-center gap-[5px]"
                     type="primary"
-                    onClick={() => setToggleModal(!toggleModal)}
+                    onClick={handleAdd}
                 >
                     <icons.BsPlusCircleFill className="text-[20px] text-main" />
                     <p className="text-[14px] font-semibold text-main">
@@ -98,11 +160,13 @@ const ManageCampaigns = () => {
                 <MyModal
                     onSubmit={onSubmit}
                     campaign={campaign}
+                    setCampaign={setCampaign}
                     toggleModal={toggleModal}
                     setToggleModal={setToggleModal}
-                    setCampaign={setCampaign}
+                    isEdit={isEdit}
                 />
             )}
+            {toggleModal2 && <MyModal2 />}
             <div className="flex flex-col">
                 <div className="flex items-center justify-center py-[10px] border-b-2 border-[#ccc] gap-[10px]">
                     <div className="flex items-center gap-[6px] drop-shadow-md py-[8px] px-[15px] bg-[#fff] rounded-[3px]">
@@ -154,7 +218,9 @@ const ManageCampaigns = () => {
                             campaigns={campaigns}
                             toggleModal={toggleModal}
                             setToggleModal={setToggleModal}
-                            // handleClickDetail={handleClickDetail}
+                            handleDetail={handleDetail}
+                            handleUpdate={handleUpdate}
+                            handleDelete={handleDelete}
                         />
                     )}
                 </div>

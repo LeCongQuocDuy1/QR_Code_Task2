@@ -20,6 +20,7 @@ import { HiMiniFire } from "react-icons/hi2";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { HiOutlineSearch } from "react-icons/hi";
 import { AiFillEye } from "react-icons/ai";
+import { CiCircleRemove } from "react-icons/ci";
 
 const icons = {
     BiSolidDashboard,
@@ -39,6 +40,7 @@ const icons = {
     FaPencilAlt,
     RiDeleteBin6Line,
     AiFillEye,
+    CiCircleRemove,
 };
 
 export default icons;

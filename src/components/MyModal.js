@@ -27,19 +27,20 @@ const MyModal = ({
     onSubmit,
     toggleModal,
     setToggleModal,
-    // campaign,
-    // setCampaign,
+    campaign,
+    isEdit,
 }) => {
     const {
         register,
         handleSubmit,
         formState: { errors },
+        watch,
+        setValue,
     } = useForm({
         resolver: yupResolver(schema),
     });
 
     const handleCancel = () => {
-        // setCampaign(null);
         setToggleModal(!toggleModal);
     };
 
@@ -60,13 +61,15 @@ const MyModal = ({
                     onSubmit={handleSubmit(onSubmit)}
                     className="flex flex-col gap-[10px] p-[20px]"
                 >
-                    <input
-                        type="hidden"
-                        name="id"
-                        // value={campaign ? campaign?.campaign_id : ""}
-                    />
                     <div className="grid grid-cols-2 gap-[30px] w-full">
                         <div className="">
+                            <input
+                                type="hidden"
+                                name="campaign_id"
+                                value={isEdit ? campaign?.campaign_id : ""}
+                                className="border-none outline-none text-[16px] text-[#000]"
+                                {...register("campaign_id")}
+                            />
                             <div className="flex flex-col border-b-[1px] border-[#999] pb-[8px] mb-[20px]">
                                 <label className="text-[13px] text-[#999] mb-[5px]">
                                     Trạng thái
@@ -75,16 +78,23 @@ const MyModal = ({
                                     name="status"
                                     className="border-none outline-none text-[16px] text-[#000]"
                                     {...register("status")}
+                                    defaultValue={
+                                        isEdit ? campaign?.status.id : 0
+                                    }
                                 >
                                     <option
-                                        value="0"
-                                        // selected={campaign?.status.id}
+                                        defaultValue={
+                                            isEdit ? campaign?.status.id : 0
+                                        }
+                                        value={0}
                                     >
                                         Nháp
                                     </option>
                                     <option
-                                        value="1"
-                                        // selected={campaign?.status.id}
+                                        defaultValue={
+                                            isEdit ? campaign?.status.id : 1
+                                        }
+                                        value={1}
                                     >
                                         Hoạt động
                                     </option>
@@ -96,12 +106,15 @@ const MyModal = ({
                                 </label>
                                 <input
                                     type="date"
-                                    // value={
-                                    //     campaign
-                                    //         ? campaign?.start_date.split(" ")[0]
-                                    //         : ""
-                                    // }
                                     name="start_date"
+                                    defaultValue={
+                                        isEdit
+                                            ? campaign?.start_date.split(" ")[0]
+                                            : watch("start_date")
+                                    }
+                                    onChange={(e) =>
+                                        setValue("start_date", e.target.value)
+                                    }
                                     className="border-none outline-none text-[16px] text-[#000]"
                                     {...register("start_date")}
                                 />
@@ -115,8 +128,15 @@ const MyModal = ({
                                 </label>
                                 <input
                                     type="text"
-                                    // value={campaign ? campaign?.reward_url : ""}
                                     name="reward_url"
+                                    defaultValue={
+                                        isEdit
+                                            ? campaign?.reward_url
+                                            : watch("reward_url")
+                                    }
+                                    onChange={(e) =>
+                                        setValue("reward_url", e.target.value)
+                                    }
                                     className="border-none outline-none text-[16px] text-[#000]"
                                     {...register("reward_url")}
                                 />
@@ -131,10 +151,15 @@ const MyModal = ({
                                     Tên chiến dịch
                                 </label>
                                 <input
-                                    // value={campaign ? campaign?.name : ""}
                                     type="text"
                                     name="name"
                                     className="border-none outline-none text-[16px] text-[#000]"
+                                    defaultValue={
+                                        isEdit ? campaign?.name : watch("name")
+                                    }
+                                    onChange={(e) =>
+                                        setValue("name", e.target.value)
+                                    }
                                     {...register("name")}
                                 />
                                 <p className="error">{errors.name?.message}</p>
@@ -145,12 +170,15 @@ const MyModal = ({
                                 </label>
                                 <input
                                     type="date"
-                                    // value={
-                                    //     campaign
-                                    //         ? campaign?.end_date.split(" ")[0]
-                                    //         : ""
-                                    // }
                                     name="end_date"
+                                    defaultValue={
+                                        isEdit
+                                            ? campaign?.end_date.split(" ")[0]
+                                            : watch("end_date")
+                                    }
+                                    onChange={(e) =>
+                                        setValue("end_date", e.target.value)
+                                    }
                                     className="border-none outline-none text-[16px] text-[#000]"
                                     {...register("end_date")}
                                 />
@@ -161,12 +189,21 @@ const MyModal = ({
                         </div>
                     </div>
                     <div className="flex items-center justify-center gap-[5px] mt-[20px]">
-                        <button
-                            type="submit"
-                            className="bg-main py-[10px] w-[90px] rounded-md text-[#fff]"
-                        >
-                            Lưu
-                        </button>
+                        {isEdit ? (
+                            <button
+                                type="submit"
+                                className="bg-main py-[10px] w-[90px] rounded-md text-[#fff]"
+                            >
+                                Chỉnh sửa
+                            </button>
+                        ) : (
+                            <button
+                                type="submit"
+                                className="bg-main py-[10px] w-[90px] rounded-md text-[#fff]"
+                            >
+                                Thêm
+                            </button>
+                        )}
                         <button
                             type="button"
                             onClick={handleCancel}

@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import icons from "../utils/icons";
 
-const MyTable = ({
-    campaigns,
-    // handleClickDetail
-}) => {
+const MyTable = ({ campaigns, handleDelete, handleUpdate, handleDetail }) => {
     return (
         <div className="">
             <h3 className="text-[16px] font-semibold text-[#000] my-[15px]">
@@ -49,19 +46,27 @@ const MyTable = ({
                             <td className="text-[16px]">
                                 <div className="flex items-center gap-[15px]">
                                     <div
-                                        // onClick={() => {
-                                        //     handleClickDetail(
-                                        //         item?.campaign_id
-                                        //     );
-                                        // }}
+                                        onClick={() => {
+                                            handleDetail(item?.campaign_id);
+                                        }}
                                         className=""
                                     >
                                         <icons.AiFillEye className="text-main text-[21px] font-bold cursor-pointer" />
                                     </div>
-                                    <div className="">
+                                    <div
+                                        onClick={() => {
+                                            handleUpdate(item?.campaign_id);
+                                        }}
+                                        className=""
+                                    >
                                         <icons.FaPencilAlt className="text-[#757575] text-[14px] font-bold cursor-pointer" />
                                     </div>
-                                    <div className="">
+                                    <div
+                                        onClick={() => {
+                                            handleDelete(item?.campaign_id);
+                                        }}
+                                        className=""
+                                    >
                                         <icons.RiDeleteBin6Line className="text-[#fb92b8] text-[18px] font-bold cursor-pointer" />
                                     </div>
                                 </div>

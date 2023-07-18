@@ -33,3 +33,10 @@ export const apiUpdateCampaign = (cid, data) =>
         url: "/campaigns/" + cid,
         data,
     });
+
+export const apiDeleteCampaign = (cid) =>
+    axios({
+        method: "DELETE",
+        url: "/campaigns/",
+        params: cid,
+    });

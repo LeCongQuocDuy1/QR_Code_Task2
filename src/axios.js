@@ -9,7 +9,7 @@ instance.interceptors.request.use(
     function (config) {
         // Do something before request is sent
         config.headers = {
-            authorization: `Bearer 20|PVqJGqnJ2cKXSCnzUZHmiBRYVBKPWf1A0kmoE2Dp`,
+            authorization: `Bearer 22|8Wja5TtKSs9vXEKl9stScXnPnxK0vLzr2IpUkwMD`,
         };
         return config;
     },
