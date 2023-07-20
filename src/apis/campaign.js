@@ -40,3 +40,16 @@ export const apiDeleteCampaign = (cid) =>
         url: "/campaigns/",
         params: cid,
     });
+
+export const apiGetCampaignConfig = (cid) =>
+    axios({
+        method: "GET",
+        url: `/campaigns/${cid}/config`,
+    });
+
+export const apiCreateCampaignConfig = (cid, data) =>
+    axios({
+        method: "POST",
+        url: `/campaigns/${cid}/config`,
+        data,
+    });

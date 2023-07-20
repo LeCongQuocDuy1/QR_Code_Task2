@@ -1,36 +1,36 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+    baseURL: process.env.REACT_APP_API_URL,
 });
 
 // Add a request interceptor
 instance.interceptors.request.use(
-  function (config) {
-    // Do something before request is sent
-    config.headers = {
-      authorization: `Bearer 32|NwZKUikm9C3RJZRJbab4Qpcc0s3FhD5og4Wf4hMX`,
-    };
-    return config;
-  },
-  function (error) {
-    // Do something with request error
-    return Promise.reject(error);
-  }
+    function (config) {
+        // Do something before request is sent
+        config.headers = {
+            authorization: `Bearer 36|XLmhyEVgVcMvhoFtS2EIvbGbLD0noEtcASHh3OWb`,
+        };
+        return config;
+    },
+    function (error) {
+        // Do something with request error
+        return Promise.reject(error);
+    }
 );
 
 // Add a response interceptor
 instance.interceptors.response.use(
-  function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-    return response.data;
-  },
-  function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
-    return error.response.data;
-  }
+    function (response) {
+        // Any status code that lie within the range of 2xx cause this function to trigger
+        // Do something with response data
+        return response.data;
+    },
+    function (error) {
+        // Any status codes that falls outside the range of 2xx cause this function to trigger
+        // Do something with response error
+        return error.response.data;
+    }
 );
 
 export default instance;
